@@ -1,0 +1,27 @@
+(a) I use Ubuntu 16.04.3 LST version in my own desktop. Also, I connect to it 
+using ssh through my Macbook. 
+
+(b) It is desktop. No one share this computer with me. Is has 512G SSD and 1T
+disk. 
+
+df: displays the amount of disk space available on the file system containing 
+each file name argument. (Although this is copy-paste from 'man', but I can't 
+find a more suitable description about 'df')
+* FileSystem: Where this file system partition is .
+* 1K-blocks: block units (could be 512, 2K)
+* Used/ Available/ %Used: easy, used/ available memory size.
+* Mounted on: directory where this file system mounted on.
+
+du: Summarize disk usage of the set of FILEs, recursively for directories.
+
+(c) Ubuntu, 16.04.3
+
+(d) zsh. 
+'echo $SHELL' can display shell. 
+adm cdrom sudo dip plugdev lpadmin sambashare. 
+
+(c)
+     path               version
+g++: /usr/bin/g++       5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4)
+make: /usr/bin/make     GNU Make 4.1
+gdb:  /usr/local/bin/gdb 8.0.1
