@@ -1,3 +1,6 @@
+/**
+ * @author ymy1248
+ */
 #include <iostream>
 #include "hw1.2.p1a.h"
 

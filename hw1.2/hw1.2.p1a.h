@@ -1,3 +1,6 @@
+/**
+ * @author ymy1248
+ */
 #include <string>
 
 using namespace::std;
