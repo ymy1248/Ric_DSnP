@@ -87,6 +87,11 @@ bool
 CmdParser::moveBufPtr(char* const ptr)
 {
    // TODO...
+   if (ptr > _readBuf && ptr < _readBufEnd) {
+      mybeep();
+      return false;
+   }
+
    return true;
 }
 
