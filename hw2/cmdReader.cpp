@@ -9,6 +9,8 @@
 #include <cstring>
 #include "cmdParser.h"
 
+#define DEBUG 1
+
 using namespace std;
 
 //----------------------------------------------------------------------
@@ -54,8 +56,8 @@ CmdParser::readCmdInt(istream& istr)
                                printPrompt(); break;
          case ARROW_UP_KEY   : moveToHistory(_historyIdx - 1); break;
          case ARROW_DOWN_KEY : moveToHistory(_historyIdx + 1); break;
-         case ARROW_RIGHT_KEY: /* TODO */ break;
-         case ARROW_LEFT_KEY : /* TODO */ break;
+         case ARROW_RIGHT_KEY: /* TODO */ moveBufPtr(_readBufPtr + 1); break;
+         case ARROW_LEFT_KEY : /* TODO */ moveBufPtr(_readBufPtr - 1); break;
          case PG_UP_KEY      : moveToHistory(_historyIdx - PG_OFFSET); break;
          case PG_DOWN_KEY    : moveToHistory(_historyIdx + PG_OFFSET); break;
          case TAB_KEY        : /* TODO */ break;
@@ -87,11 +89,17 @@ bool
 CmdParser::moveBufPtr(char* const ptr)
 {
    // TODO...
-   if (ptr > _readBuf && ptr < _readBufEnd) {
+   if (ptr < _readBuf || ptr > _readBufEnd) {
+      #if DEBUG
+      cout << "move buffer out of range." << endl;
+      #endif
       mybeep();
       return false;
    }
-
+   int diff = ptr - _readBuf;
+   int pos = 6 + diff;
+   cout << "\e[" << pos << "G";
+   _readBufPtr = ptr;
    return true;
 }
 
@@ -119,6 +127,15 @@ bool
 CmdParser::deleteChar()
 {
    // TODO...
+   if (_readBufPtr == _readBufEnd) {
+      mybeep();
+      return false;
+   }
+   for (char *p = _readBufPtr; p < _readBufEnd; ++p) {
+      *p = *(p+1);
+   }
+   --_readBufEnd;
+   cmdRefresh();
    return true;
 }
 
@@ -140,6 +157,13 @@ void
 CmdParser::insertChar(char ch, int rep)
 {
    // TODO...
+   _readBufEnd++;
+   for (char *p = _readBufEnd; p > _readBufPtr; --p) {
+      *p = *(p-1);
+   }
+   *(_readBufPtr) = ch;
+   cmdRefresh();
+   moveBufPtr(_readBufPtr + 1);
 }
 
 // 1. Delete the line that is currently shown on the screen
@@ -221,4 +245,11 @@ CmdParser::retrieveHistory()
    strcpy(_readBuf, _history[_historyIdx].c_str());
    cout << _readBuf;
    _readBufPtr = _readBufEnd = _readBuf + _history[_historyIdx].size();
+}
+
+void CmdParser::cmdRefresh(){
+    cout << "\e[6G";
+    cout << "\e[0K";
+    cout << _readBuf;
+    moveBufPtr(_readBufPtr);
 }

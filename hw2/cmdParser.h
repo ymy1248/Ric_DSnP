@@ -57,6 +57,7 @@ private:
    void moveToHistory(int index);
    void addHistory();
    void retrieveHistory();
+   void cmdRefresh();
    #ifdef TA_KB_SETTING
    void taTestOnly() {}
    #endif
